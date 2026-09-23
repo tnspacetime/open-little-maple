@@ -131,7 +131,7 @@ body {
   font-family: var(--font-sans);
   font-optical-sizing: auto;
   background: var(--bg-base);
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
