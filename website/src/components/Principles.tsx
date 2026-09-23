@@ -45,7 +45,7 @@ function Principle({ children, order, title }: PrincipleProps) {
 
 	return (
 		<motion.article
-			className="flex flex-col items-start gap-5 py-12 sm:gap-6 sm:py-20"
+			className="flex flex-col items-start gap-5 py-12 first:pt-6 sm:gap-6 sm:py-20 sm:first:pt-20"
 			initial={
 				reducedMotion ? false : { opacity: 0, y: 24, filter: "blur(8px)" }
 			}
@@ -74,7 +74,7 @@ export default function Principles() {
 	return (
 		<section
 			ref={sectionRef}
-			className="relative mx-auto mt-16 w-full max-w-4xl pb-[28vh] sm:mt-24"
+			className="relative mx-auto mt-6 w-full max-w-4xl pb-[28vh] sm:mt-24"
 			aria-label="Little Maple design principles"
 		>
 			<GlassAssembly sectionRef={sectionRef} />

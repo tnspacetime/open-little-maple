@@ -381,7 +381,7 @@ function usePreviewRows(reducedMotion: boolean | null) {
 
 function PromptRow({ row }: { row: Extract<PreviewRow, { kind: "prompt" }> }) {
 	return (
-		<div className="flex items-start gap-2.5 text-[clamp(0.64rem,1.15vw,0.78rem)] leading-[1.45] text-[var(--contrast-ink-soft)]">
+		<div className="flex items-start gap-2.5 text-[0.75rem] leading-[1.45] text-[var(--contrast-ink-soft)] sm:text-[clamp(0.64rem,1.15vw,0.78rem)]">
 			<span className="mt-[0.58em] size-1.5 shrink-0 rounded-full bg-[var(--contrast-ink-soft)]" />
 			<span>{row.text}</span>
 		</div>
@@ -394,7 +394,7 @@ function AssistantRow({
 	row: Extract<PreviewRow, { kind: "assistant" }>;
 }) {
 	return (
-		<p className="m-0 text-[clamp(0.72rem,1.38vw,0.96rem)] leading-[1.45] tracking-[-0.015em] text-[var(--contrast-ink)]">
+		<p className="m-0 text-[0.84rem] leading-[1.45] tracking-[-0.015em] text-[var(--contrast-ink)] sm:text-[clamp(0.72rem,1.38vw,0.96rem)]">
 			{row.text}
 			{row.streaming ? (
 				<motion.span
@@ -411,7 +411,7 @@ function ToolRow({ row }: { row: Extract<PreviewRow, { kind: "tool" }> }) {
 	const completed = row.status === "completed";
 
 	return (
-		<div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono text-[clamp(0.58rem,1.04vw,0.72rem)]">
+		<div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono text-[0.68rem] sm:text-[clamp(0.58rem,1.04vw,0.72rem)]">
 			<motion.span
 				className={`size-1.5 shrink-0 rounded-full ${completed ? "bg-[var(--contrast-ink)]" : "bg-[var(--contrast-ink-soft)]"}`}
 				animate={completed ? { opacity: 1 } : { opacity: [0.35, 1, 0.35] }}
@@ -451,15 +451,15 @@ export default function StreamingTurnPreview() {
 	const rows = usePreviewRows(reducedMotion);
 
 	return (
-		<section className="relative mt-6 aspect-[8/5] w-full overflow-hidden sm:mt-7">
+		<section className="relative mt-6 aspect-square w-full overflow-hidden sm:mt-7 sm:aspect-[8/5]">
 			<div
-				className="pointer-events-none absolute inset-y-0 left-0 flex w-[72%] items-center px-7 py-4 sm:px-14 sm:py-6 md:px-20"
+				className="pointer-events-none absolute inset-y-0 left-0 flex w-[80%] items-center px-2 py-2 sm:w-[72%] sm:px-14 sm:py-6 md:px-20"
 				aria-hidden="true"
 			>
 				<div className="h-full w-full rounded-[1.4rem] bg-[var(--contrast-surface)]" />
 			</div>
 
-			<div className="absolute top-1/2 left-[68%] z-10 aspect-square h-[62%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full mix-blend-difference">
+			<div className="absolute top-1/2 left-[78%] z-10 aspect-square h-[64%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full mix-blend-difference sm:left-[68%] sm:h-[62%]">
 				<Dithering
 					className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
 					width="132%"
@@ -475,7 +475,7 @@ export default function StreamingTurnPreview() {
 			</div>
 
 			<motion.div
-				className="absolute inset-y-0 left-0 z-20 flex w-[72%] items-center px-7 py-4 sm:px-14 sm:py-6 md:px-20"
+				className="absolute inset-y-0 left-0 z-20 flex w-[80%] items-center px-2 py-2 sm:w-[72%] sm:px-14 sm:py-6 md:px-20"
 				initial={
 					reducedMotion ? false : { opacity: 0, y: 12, filter: "blur(5px)" }
 				}
@@ -485,7 +485,7 @@ export default function StreamingTurnPreview() {
 					ease: [0.22, 1, 0.36, 1],
 				}}
 			>
-				<div className="flex h-full w-full flex-col justify-end gap-1.5 overflow-hidden px-5 py-4 sm:px-6 sm:py-5">
+				<div className="flex h-full w-full flex-col justify-end gap-1.5 overflow-hidden px-4 py-4 sm:px-6 sm:py-5">
 					<AnimatePresence initial={false} mode="popLayout">
 						{rows.map((row) => (
 							<StreamRow key={row.id} row={row} />
