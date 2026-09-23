@@ -1,17 +1,20 @@
 # Little Maple
 
-Little Maple is a minimal, hackable harness for experimenting with coding agents. It keeps the agent loop explicit and durable: each Session records its chosen services, model Steps, Tool calls, and outcomes. The current app runs that Harness in a local daemon with SQLite and an OpenTUI client; its default Provider uses OpenAI Responses.
+Little Maple is a minimal, hackable harness for experimenting with coding agents. It records a Turn's `Provider`, `Tool`, `Location`, and `ToolCallRule` selections as one contract. Every model call in that Turn uses the same contract, and the Session journals the calls and their outcomes. The current app runs the Harness in a local daemon with SQLite and an OpenTUI client; its default Provider uses OpenAI Responses.
 
 [Website](https://little-maple.tnspacetime.com)
 
 ## Design
 
-An in-process agent loop can keep its model, tools, policy, and working directory in mutable runner settings. Little Maple records the chosen services in the Session instead. Each **Turn** resolves that selection once; every model **Step** and Tool call in the Turn uses the same configuration.
+**Location is a service the Turn selects.** Many coding-agent loops attach a working directory to the Session and let every repository Tool inherit it. Little Maple records a `Location` alongside its `Provider` and `Tool` choices. A later Turn can select another Location; a branch can make a different choice without changing its parent. Starting the daemon inside a repository grants no access by itself.
 
-- **Turn services.** Plugins register live `Provider`, `Tool`, `ToolCallRule`, `Location`, and `HistoryTranslator` implementations. The Session records each choice's identity, revision, and settings; the Turn holds the matching live implementations. A restart must resolve the recorded selection rather than substitute a different service.
-- **Location as a service.** Repository access comes from an explicitly selected `Location`, not the daemon's current directory. `ToolCallRule` policies authorize each requested Tool call and can narrow the Location visible to it.
-- **Branches of the full Session.** A branch inherits an exact prefix of Session facts, including its service selection, then writes its own suffix. Later prompts or configuration changes in the parent do not enter the branch.
-- **Recorded effect boundaries.** The Harness commits a Step or Tool call before invoking external work and records the outcome afterward. If the outcome is lost, the invocation needs explicit recovery rather than an automatic repeat.
+**Tool selection and Tool authority are separate.** Selecting a `Tool` makes it available to the model. Selected `ToolCallRule` policies inspect each requested call before execution; they can reject it or narrow which selected Locations the Tool receives. `Tool.execute()` gets that restricted resource view, rather than the whole registry or the daemon's working directory.
+
+**The Turn has the contract; a Step is one real model invocation.** The Session journals a description of its selected services: kind, key, revision, settings, and order. At Turn start, the Harness resolves that description against live Plugin registrations and holds the result through every Step and Tool call. It does not define a separate Step specification. Each `Provider.stream()` call is a Step whose request is derived from recorded prompts, accepted output, Tool results, and the frozen Turn configuration. A service change applies to the next Turn. If a recorded service no longer matches a live implementation after restart, resolution fails explicitly.
+
+**Branches inherit the facts, not only the transcript.** A branch reads an exact prefix of its parent's journal, including service selections, Provider output, Tool decisions, and results, then writes its own suffix. Later changes in the parent do not enter the branch.
+
+**The projector guards the journal.** `projectSessionFact()` checks each candidate fact against the current Session state before it can be appended: for example, a Tool cannot settle before it is committed, and a new Step cannot start while another Step is active. The store writes the accepted fact and its projection together. The same rules replay a branch's inherited prefix. A committed Provider or Tool invocation with no recorded outcome requires explicit recovery; the Harness does not silently run it again.
 
 The daemon exposes authenticated local commands and live events. SQLite facts and projections are the source of truth; the TUI is a client of that state.
 
