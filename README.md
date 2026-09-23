@@ -1,6 +1,6 @@
 # Little Maple
 
-Little Maple gives an agent a durable Session: prompts, model output, Tool outcomes, and the services selected to produce them are recorded together. A loopback daemon runs the Harness and owns SQLite state; an OpenTUI client shows live output and reconnects to the same Sessions. The current runtime uses the OpenAI Responses API.
+Little Maple is a minimal, hackable harness for experimenting with coding agents. It keeps the agent loop explicit and durable: each Session records its chosen services, model Steps, Tool calls, and outcomes. The current app runs that Harness in a local daemon with SQLite and an OpenTUI client; its default Provider uses OpenAI Responses.
 
 ## Design
 
