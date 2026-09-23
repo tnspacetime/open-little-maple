@@ -22,6 +22,29 @@ export function SessionTranscript({
     [sessionID, session],
   );
 
+  if (presentation.rows.length === 0 && !presentation.emptyText) {
+    return (
+      <box
+        style={{
+          flexGrow: 1,
+          minHeight: 0,
+          width: "100%",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <box style={{ flexDirection: "column", alignItems: "center" }}>
+          <text fg={colors.text}>■ ■ ■</text>
+          <text fg={colors.text}>■ ■ ■</text>
+          <text fg={colors.text}>■ ■ ■</text>
+        </box>
+        <box style={{ height: 1 }} />
+        <text fg={colors.text}>Little Maple</text>
+      </box>
+    );
+  }
+
   return (
     <scrollbox
       focused={focused}

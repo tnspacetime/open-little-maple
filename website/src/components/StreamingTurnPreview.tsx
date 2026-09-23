@@ -451,7 +451,7 @@ export default function StreamingTurnPreview() {
 	const rows = usePreviewRows(reducedMotion);
 
 	return (
-		<section className="relative mt-6 aspect-square w-full overflow-hidden sm:mt-7 sm:aspect-[8/5]">
+		<section className="relative mt-6 aspect-square w-full overflow-clip sm:mt-7 sm:aspect-[8/5]">
 			<div
 				className="pointer-events-none absolute inset-y-0 left-0 flex w-[80%] items-center px-2 py-2 sm:w-[72%] sm:px-14 sm:py-6 md:px-20"
 				aria-hidden="true"
@@ -459,7 +459,7 @@ export default function StreamingTurnPreview() {
 				<div className="h-full w-full rounded-[1.4rem] bg-[var(--contrast-surface)]" />
 			</div>
 
-			<div className="absolute top-1/2 left-[78%] z-10 aspect-square h-[64%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full mix-blend-difference sm:left-[68%] sm:h-[62%]">
+			<div className="absolute top-1/2 left-[78%] z-10 aspect-square h-[64%] -translate-x-1/2 -translate-y-1/2 overflow-clip rounded-full mix-blend-difference sm:left-[68%] sm:h-[62%]">
 				<Dithering
 					className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
 					width="132%"

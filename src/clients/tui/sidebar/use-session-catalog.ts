@@ -13,7 +13,7 @@ export type SessionCatalog = {
   notice: string;
   select(sessionID: string | undefined): void;
   refresh(preferredSessionID?: string): Promise<void>;
-  createSession(): Promise<boolean>;
+  createSession(): Promise<string | undefined>;
 };
 
 export function useSessionCatalog(client: HarnessClient): SessionCatalog {
@@ -51,15 +51,15 @@ export function useSessionCatalog(client: HarnessClient): SessionCatalog {
     [client],
   );
 
-  const createSession = useCallback(async (): Promise<boolean> => {
+  const createSession = useCallback(async (): Promise<string | undefined> => {
     setNotice("Creating session…");
     try {
       const created = await client.createSession();
       await refresh(created.session.id);
-      return true;
+      return created.session.id;
     } catch (cause) {
       setNotice(errorMessage(cause));
-      return false;
+      return undefined;
     }
   }, [client, refresh]);
 

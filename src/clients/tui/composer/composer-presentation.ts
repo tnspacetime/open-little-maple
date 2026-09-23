@@ -15,9 +15,9 @@ export function presentComposer(
 ): ComposerPresentation {
   if (!sessionID) {
     return {
-      placeholder: "Create a session first",
-      enabled: false,
-      status: { label: "No session selected", animated: false },
+      placeholder: "",
+      enabled: true,
+      status: { label: "", animated: false },
     };
   }
   if (session?.snapshot?.execution.status === "recovery-required") {

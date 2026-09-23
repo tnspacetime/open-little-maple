@@ -18,6 +18,24 @@ Little Maple is a minimal, hackable harness for experimenting with coding agents
 
 The daemon exposes authenticated local commands and live events. SQLite facts and projections are the source of truth; the TUI is a client of that state.
 
+## Screenshots
+
+**Empty state**
+
+![Little Maple TUI with no sessions](assets/screenshots/s1.png)
+
+**Streaming response**
+
+![A response streaming in the Little Maple TUI](assets/screenshots/s2.png)
+
+**Conversation detail**
+
+![A completed response in the Little Maple TUI](assets/screenshots/s3.png)
+
+**Multiple sessions**
+
+![Two sessions listed beside a conversation in the Little Maple TUI](assets/screenshots/s4.png)
+
 ## Run
 
 Requires Node.js 22 or later and Bun 1.x.
@@ -35,9 +53,13 @@ In another terminal:
 npm run tui
 ```
 
-Select **Add session**, type a prompt, and press Enter. Use `Ctrl+J` for a newline. `Tab` moves focus, `Ctrl+R` refreshes the Session list, and `Ctrl+C` closes the TUI. `Ctrl+U` resumes a paused Session. Closing the TUI does not stop the daemon.
+Type a prompt and press Enter to create a Session and send it in one step. **Add session** still creates an empty Session. Use `Ctrl+J` for a newline. `Tab` moves focus, `Ctrl+R` refreshes the Session list, and `Ctrl+C` closes the TUI. `Ctrl+U` resumes a paused Session. Closing the TUI does not stop the daemon.
 
-`OPENAI_MODEL` defaults to `gpt-5.6-luna`; `OPENAI_BASE_URL` can point the Responses adapter at a compatible endpoint. State lives in `~/.little-maple` by default. Set `LITTLE_MAPLE_STATE_DIR` to move it, or `LITTLE_MAPLE_DATABASE` to choose the SQLite file.
+The supplied `.env.example` selects `gpt-6-luna`; without `OPENAI_MODEL`, the daemon falls back to `gpt-5.6-luna`. `OPENAI_BASE_URL` can point the Responses adapter at a compatible endpoint.
+
+### Local database
+
+Sessions are stored in `~/.little-maple/harness.sqlite` by default. SQLite may also create `harness.sqlite-wal` and `harness.sqlite-shm` in the same directory. To clear local Sessions, stop the daemon and remove those three files; the next start creates a fresh database. Set `LITTLE_MAPLE_STATE_DIR` to move the state directory, or `LITTLE_MAPLE_DATABASE` to choose a different SQLite file.
 
 ## Current scope
 

@@ -46,19 +46,26 @@ function TuiContent({
   const [focus, setFocus] = useState<Focus>("composer");
   const [sidebarVisible, setSidebarVisible] = useState(true);
   const [creatingSession, setCreatingSession] = useState(false);
-  const creatingSessionRef = useRef(false);
+  const creatingSessionRef = useRef<Promise<string | undefined> | undefined>(
+    undefined,
+  );
 
-  const createSession = useCallback(async () => {
-    if (creatingSessionRef.current) return;
-    creatingSessionRef.current = true;
-    setCreatingSession(true);
-    try {
-      if (await catalog.createSession()) setFocus("composer");
-    } finally {
-      creatingSessionRef.current = false;
-      setCreatingSession(false);
-    }
-  }, [catalog]);
+  const createSession = useCallback(() => {
+    if (creatingSessionRef.current) return creatingSessionRef.current;
+    const pending = (async () => {
+      setCreatingSession(true);
+      try {
+        const sessionID = await catalog.createSession();
+        if (sessionID) setFocus("composer");
+        return sessionID;
+      } finally {
+        creatingSessionRef.current = undefined;
+        setCreatingSession(false);
+      }
+    })();
+    creatingSessionRef.current = pending;
+    return pending;
+  }, [catalog.createSession]);
 
   const toggleSidebar = useCallback(() => {
     if (sidebarVisible && focus === "sessions") setFocus("composer");
@@ -134,10 +141,9 @@ function TuiContent({
 
           <SessionComposer
             sessionID={catalog.selectedSessionID}
-            focused={
-              focus === "composer" && Boolean(catalog.selectedSessionID)
-            }
+            focused={focus === "composer"}
             onFocus={() => setFocus("composer")}
+            onCreateSession={createSession}
           />
         </box>
       </box>

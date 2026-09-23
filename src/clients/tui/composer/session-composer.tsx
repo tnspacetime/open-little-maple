@@ -15,21 +15,29 @@ export function SessionComposer({
   sessionID,
   focused,
   onFocus,
+  onCreateSession,
 }: {
   sessionID: string | undefined;
   focused: boolean;
   onFocus(): void;
+  onCreateSession(): Promise<string | undefined>;
 }) {
   const store = useSessionClientStore();
   const session = useSessionState(sessionID);
   const input = useRef<TextareaRenderable>(null);
+  const previousSessionID = useRef(sessionID);
+  const submittingRef = useRef(false);
   const [draft, setDraft] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const presentation = useMemo(
     () => presentComposer(sessionID, session),
     [sessionID, session],
   );
 
   useEffect(() => {
+    const previous = previousSessionID.current;
+    previousSessionID.current = sessionID;
+    if (previous === sessionID || (!previous && sessionID)) return;
     setDraft("");
     input.current?.clear();
   }, [sessionID]);
@@ -84,18 +92,25 @@ export function SessionComposer({
   const submit = useCallback(
     async (value: string) => {
       const text = value.trim();
-      if (!sessionID || !text) return;
+      if (!text || submittingRef.current) return;
+      submittingRef.current = true;
+      setSubmitting(true);
       setDraft("");
       input.current?.clear();
       try {
-        await store.sendText(sessionID, text);
+        const targetSessionID = sessionID ?? (await onCreateSession());
+        if (!targetSessionID) throw new Error("Could not create session");
+        await store.sendText(targetSessionID, text);
       } catch {
         setDraft(text);
         input.current?.setText(text);
         input.current?.gotoBufferEnd();
+      } finally {
+        submittingRef.current = false;
+        setSubmitting(false);
       }
     },
-    [store, sessionID],
+    [store, sessionID, onCreateSession],
   );
 
   const resume = useCallback(async () => {
@@ -134,7 +149,7 @@ export function SessionComposer({
         ref={input}
         initialValue={draft}
         placeholder={presentation.placeholder}
-        focused={focused && presentation.enabled}
+        focused={focused && presentation.enabled && !submitting}
         onContentChange={() => {
           setDraft(input.current?.plainText ?? "");
         }}
@@ -188,8 +203,8 @@ function ComposerStatus({
     <text fg={colors.muted}>
       <span style={{ fg: colors.composer }}>
         {animated ? activityFrames[frame] : activityFrames[0]}
-      </span>{" "}
-      {label}
+      </span>
+      {label ? ` ${label}` : ""}
     </text>
   );
 }

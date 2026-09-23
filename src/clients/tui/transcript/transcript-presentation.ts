@@ -34,7 +34,7 @@ export function presentSessionTranscript(
   session: SessionSynchronization | undefined,
 ): SessionTranscriptPresentation {
   if (!sessionID) {
-    return { rows: [], emptyText: "Choose or create a session." };
+    return { rows: [], emptyText: undefined };
   }
   if (!session?.snapshot) {
     if (session?.error) {
@@ -66,13 +66,7 @@ export function presentSessionTranscript(
     rows.push(synchronizationErrorRow(sessionID, session.error));
   }
 
-  return {
-    rows,
-    emptyText:
-      rows.length === 0
-        ? "No messages yet. Tab to the composer and send one."
-        : undefined,
-  };
+  return { rows, emptyText: undefined };
 }
 
 export function rowsFromSessionState(
