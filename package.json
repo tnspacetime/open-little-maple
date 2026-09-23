@@ -1,0 +1,25 @@
+{
+  "name": "little-maple",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "npm run typecheck",
+    "daemon": "node --env-file-if-exists=.env --import tsx src/daemon/main.ts",
+    "tui": "bun run src/clients/tui/main.tsx",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "dependencies": {
+    "@opentui/core": "0.4.5",
+    "@opentui/react": "0.4.5",
+    "better-call": "^1.4.0",
+    "opentui-math": "0.1.0",
+    "react": "^19.2.0",
+    "zod": "^4.4.3"
+  }
+}

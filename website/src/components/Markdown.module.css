@@ -1,0 +1,258 @@
+.markdown {
+	max-width: 45rem;
+	color: var(--sea-ink);
+	font-size: 0.96rem;
+	line-height: 1.58;
+	letter-spacing: -0.01em;
+}
+
+.markdown > :first-child {
+	margin-top: 0;
+}
+
+.markdown > :last-child {
+	margin-bottom: 0;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+	max-width: 38rem;
+	scroll-margin-top: 9rem;
+	margin: 2.75rem 0 0.75rem;
+	color: var(--sea-ink);
+	font-weight: 600;
+	line-height: 1.25;
+	letter-spacing: -0.015em;
+}
+
+.markdown h1,
+.markdown h2 {
+	font-size: 1.125rem;
+}
+
+.markdown h3 {
+	font-size: 1rem;
+}
+
+.markdown h4 {
+	font-size: 0.95rem;
+}
+
+.markdown h5,
+.markdown h6 {
+	font-size: 0.9rem;
+}
+
+.markdown p {
+	margin: 0.9rem 0 0;
+}
+
+.markdown a {
+	color: var(--link);
+	text-decoration: underline;
+	text-decoration-thickness: 0.06em;
+	text-underline-offset: 0.14em;
+}
+
+.markdown a:hover {
+	text-decoration-thickness: 0.1em;
+}
+
+.markdown blockquote {
+	max-width: 40rem;
+	margin: 2.25rem 0;
+	border-left: 3px solid var(--link);
+	padding: 0.15rem 0 0.15rem 1.25rem;
+	color: var(--sea-ink);
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.65;
+	letter-spacing: -0.01em;
+}
+
+.markdown blockquote p {
+	margin: 0;
+}
+
+.markdown ul,
+.markdown ol {
+	margin: 1rem 0;
+	padding-left: 1.35rem;
+}
+
+.markdown li + li {
+	margin-top: 0.35rem;
+}
+
+.markdown code:not([data-language]) {
+	border: 1px solid color-mix(in srgb, var(--sea-ink) 10%, transparent);
+	border-radius: 0.42rem;
+	background: color-mix(in srgb, var(--surface) 82%, var(--bg-base));
+	padding: 0.1em 0.4em;
+	color: var(--sea-ink);
+	font-size: 0.88em;
+	font-weight: 500;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+:global(.dark) .markdown code:not([data-language]) {
+	border-color: color-mix(in srgb, var(--sea-ink) 13%, transparent);
+}
+
+.markdown [data-rehype-pretty-code-figure] {
+	position: relative;
+	margin: 2rem 0;
+}
+
+.markdown [data-rehype-pretty-code-figure] pre {
+	overflow-x: auto;
+	margin: 0;
+	border-radius: 1rem;
+	background: color-mix(in srgb, var(--bg-base) 70%, var(--surface));
+	padding: 3.75rem 1.5rem 1.35rem;
+	font-size: 0.88rem;
+	line-height: 1.65;
+	-webkit-overflow-scrolling: touch;
+}
+
+:global(.dark) .markdown [data-rehype-pretty-code-figure] pre {
+	background: color-mix(in srgb, var(--bg-base) 48%, var(--surface));
+}
+
+.copyButton {
+	position: absolute;
+	top: 0.8rem;
+	right: 0.8rem;
+	z-index: 1;
+	display: inline-flex;
+	height: 1.9rem;
+	min-width: 4.8rem;
+	cursor: pointer;
+	align-items: center;
+	justify-content: center;
+	gap: 0.38rem;
+	border: 1px solid color-mix(in srgb, var(--sea-ink) 10%, transparent);
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--surface) 88%, transparent);
+	padding: 0 0.72rem;
+	color: var(--sea-ink-soft);
+	font-family: var(--font-sans);
+	font-size: 0.7rem;
+	font-weight: 600;
+	line-height: 1;
+	letter-spacing: -0.012em;
+	box-shadow: 0 1px 4px rgb(0 0 0 / 14%);
+	backdrop-filter: blur(12px);
+	transition:
+		color 160ms ease,
+		background-color 160ms ease,
+		box-shadow 160ms ease,
+		transform 160ms ease;
+}
+
+.copyButton:hover {
+	color: var(--sea-ink);
+	box-shadow: 0 2px 7px rgb(0 0 0 / 18%);
+	transform: scale(1.018);
+}
+
+.copyButton:active {
+	transform: scale(0.975);
+}
+
+.copyButton:focus-visible {
+	outline: 2px solid #0071e3;
+	outline-offset: 3px;
+}
+
+:global(.dark) .copyButton:focus-visible {
+	outline-color: #2997ff;
+}
+
+.copyButton svg {
+	flex: none;
+}
+
+.copyButton svg[hidden] {
+	display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.copyButton {
+		transition: none;
+	}
+
+	.copyButton:hover,
+	.copyButton:active {
+		transform: none;
+	}
+}
+
+.markdown [data-rehype-pretty-code-figure] code {
+	min-width: max-content;
+	border: 0;
+	background: transparent;
+	padding: 0;
+	font-size: inherit;
+}
+
+.markdown code[data-line-numbers] {
+	counter-reset: line;
+}
+
+.markdown code[data-line-numbers] > [data-line]::before {
+	display: inline-block;
+	width: 0.75rem;
+	margin-right: 1.5rem;
+	color: color-mix(in srgb, var(--sea-ink-soft) 68%, transparent);
+	font-variant-numeric: tabular-nums;
+	text-align: right;
+	content: counter(line);
+	counter-increment: line;
+	user-select: none;
+}
+
+.markdown code[data-line-numbers-max-digits="2"] > [data-line]::before {
+	width: 1.25rem;
+}
+
+.markdown code[data-line-numbers-max-digits="3"] > [data-line]::before {
+	width: 1.75rem;
+}
+
+.markdown code[data-line-numbers-max-digits="4"] > [data-line]::before {
+	width: 2.25rem;
+}
+
+.markdown [data-theme*=" "] span {
+	color: var(--shiki-light);
+}
+
+:global(.dark) .markdown [data-theme*=" "] span {
+	color: var(--shiki-dark);
+}
+
+.markdown hr {
+	margin: 2.5rem 0;
+	border: 0;
+	border-top: 1px solid var(--line);
+}
+
+.markdown table {
+	width: 100%;
+	margin: 1.75rem 0;
+	border-collapse: collapse;
+	font-size: 0.9rem;
+}
+
+.markdown th,
+.markdown td {
+	border-bottom: 1px solid var(--line);
+	padding: 0.65rem 0.75rem;
+	text-align: left;
+}
