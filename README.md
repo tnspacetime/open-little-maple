@@ -2,6 +2,8 @@
 
 Little Maple is a minimal, hackable harness for experimenting with coding agents. It keeps the agent loop explicit and durable: each Session records its chosen services, model Steps, Tool calls, and outcomes. The current app runs that Harness in a local daemon with SQLite and an OpenTUI client; its default Provider uses OpenAI Responses.
 
+[Website](https://little-maple.tnspacetime.com)
+
 ## Design
 
 An in-process agent loop can keep its model, tools, policy, and working directory in mutable runner settings. Little Maple records the chosen services in the Session instead. Each **Turn** resolves that selection once; every model **Step** and Tool call in the Turn uses the same configuration.
